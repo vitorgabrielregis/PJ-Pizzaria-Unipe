@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Pyhrios Pizzaria</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header class="header">
+    <div class="container">
+      <div class="brand">
+        <img src="https://instadelivery-public.nyc3.cdn.digitaloceanspaces.com/groups/1715602418664203f28e75f.jpeg" alt="Pizza Icon" class="icon" />
+        <h1>Pyhrios Pizza</h1>
+      </div>
+      <button class="menu-toggle" id="menu-toggle">&#9776;</button>
+      <nav class="nav" id="nav">
+        <ul> 
+          <li><a href="#menu">Menu</a></li>
+          <li><a href="#contact">Contato</a></li>
+          <li><span>📞 (83) 999586639</span></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <section class="info-bar">
+    <div class="container">
+      <div><span>⏰ Aberto: 11:00 - 23:00</span></div>
+      <div><span>📍 Entrega grátis na cidade</span></div>
+    </div>
+  </section>
+
+  <main class="container">
+    <!-- Filtros-->
+    <div class="filters">
+      <button class="filter active" data-category="all">Todas</button>
+      <button class="filter" data-category="tradicional">Tradicional</button>
+      <button class="filter" data-category="especial">Especial</button>
+      <button class="filter" data-category="vegana">Vegana</button>
+    </div>
+
+    <!-- Lista das Pizzas-->
+    <div id="pizza-list" class="pizza-list"></div>
+
+    <!-- Carrinho -->
+    <div id="cart" class="cart hidden">
+      <h3>Carrinho</h3>
+      <ul id="cart-items"></ul>
+      <p id="cart-total">Total: R$ 0,00</p>
+
+      <div class="form">
+        <input type="text" id="nome" placeholder="Seu nome" required>
+        <input type="text" id="endereco" placeholder="Endereço de entrega" required>
+      </div>
+
+      <button onclick="enviarPedido()" class="whatsapp-order">Enviar pedido via WhatsApp</button>
+      <button onclick="toggleCart()" class="close-cart">Fechar</button>
+    </div>
+
+    <!-- Botão flutuante do carrinho-->
+    <button class="floating-cart" onclick="toggleCart()">🛒</button>
+  </main>
+   <!-- Notificação-->
+   <div id="toast" class="toast hidden">Pizza adicionada ao carrinho! 🍕</div>
+
+  <script src="script.js"></script>
+</body>
+</html>
