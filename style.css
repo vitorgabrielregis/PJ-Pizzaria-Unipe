@@ -83,6 +83,12 @@ body {
   }
 }
 
+.barra {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
 .filters {
   display: flex;
   gap: 1rem;
@@ -101,9 +107,23 @@ body {
 }
 
 .filter:hover,
-.filter.active {
+.filter.active,
+.facavocemesmo:hover,
+.facavocemesmo.active {
   background: #dc2626;
   color: white;
+}
+
+.facavocemesmo {
+  margin: 1em 1em;
+  padding: 0.5rem 1rem;
+  font-size: large;
+  border: 1px solid #dc2626;
+  background: white;
+  color: #dc2626;
+  border-radius: 20px;
+  cursor: pointer;
+  transition: 0.3s;
 }
 
 .pizza-list {
@@ -255,4 +275,50 @@ body {
 
 .toast.hidden {
   display: none;
+}
+
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.55);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  display: none; /* começa escondido */
+}
+
+.janela {
+  background: white;
+  width: 550px;
+  max-height: 90%;
+  border-radius: 12px;
+  padding: 25px;
+  overflow-y: auto;
+  box-shadow: 0 0 15px rgba(0,0,0,0.4);
+  animation: pop .25s ease;
+}
+
+@keyframes pop {
+  from { transform: scale(0.7); opacity: 0; }
+  to   { transform: scale(1);   opacity: 1; }
+}
+
+.topo_janela {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+button.fechar {
+  background: red;
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: bold;
 }
