@@ -1,17 +1,51 @@
-const menuToggle = document.getElementById('menu-toggle');
-const nav = document.getElementById('nav');
+// =====================
+// MENU MOBILE
+// =====================
+document.addEventListener("DOMContentLoaded", () => {
+  const menuToggle = document.getElementById('menu-toggle');
+  const nav = document.getElementById('nav');
 
-menuToggle.addEventListener('click', () => {
-  nav.style.display = nav.style.display === 'block' ? 'none' : 'block';
+  if (menuToggle && nav) {
+    menuToggle.addEventListener('click', () => {
+      nav.style.display = nav.style.display === 'block' ? 'none' : 'block';
+    });
+  }
 });
 
-const pizzas = [
-  { name: "Margherita", category: "tradicional", price: 32, img: "https://instadelivery-public.nyc3.cdn.digitaloceanspaces.com/groups/1715602418664203f28e75f.jpeg" },
-  { name: "Pepperoni", category: "tradicional", price: 36, img: "https://blog.duogourmet.com.br/wp-content/uploads/2019/07/41-Duo-Gourmet-pizza.jpg" },
-  { name: "Vegana Supreme", category: "vegana", price: 39, img: "https://blog.novasafra.com.br/wp-content/uploads/2019/09/receitas-de-pizza-vegana-3-1280x720.jpg" },
-  { name: "Calabresa Especial", category: "especial", price: 42, img: "https://blog.duogourmet.com.br/wp-content/uploads/2019/07/41-Duo-Gourmet-pizza.jpg" }
-];
 
+// =====================
+// LISTA DE PIZZAS
+// =====================
+let pizzas = [];
+
+async function loadPizzas() {
+  const r = await fetch("get_pizzas.php");
+  const data = await r.json();
+
+  pizzas = data.map(p => ({
+    id: p.id,
+    name: p.nome,
+    price: Number(p.preco),
+    category: p.categoria.toLowerCase(),
+    img:
+  p.nome === "Margherita" ? "img/pizzas/margherita.jpg" :
+  p.nome === "Calabresa" ? "img/pizzas/calabresa.jpg" :
+  p.nome === "Frango com Catupiry" ? "img/pizzas/frango.jpg" :
+  p.nome === "Quatro Queijos" ? "img/pizzas/quatroqueijos.jpg" :
+  p.nome === "Portuguesa" ? "img/pizzas/portuguesa.jpg" :
+  p.nome === "Vegana" ? "img/pizzas/vegana.jpg" :
+  "img/pizzas/default.jpg"
+
+
+  }));
+
+  renderPizzas("all");
+}
+
+
+// =====================
+// RENDERIZAR LISTA
+// =====================
 const list = document.getElementById('pizza-list');
 const cart = [];
 const cartItems = document.getElementById('cart-items');
@@ -19,7 +53,8 @@ const cartTotal = document.getElementById('cart-total');
 
 function renderPizzas(category = 'all') {
   list.innerHTML = "";
-  pizzas.filter(p => category === 'all' || p.category === category)
+  pizzas
+    .filter(p => category === 'all' || p.category === category)
     .forEach(pizza => {
       const card = document.createElement("div");
       card.className = "pizza-card";
@@ -34,6 +69,10 @@ function renderPizzas(category = 'all') {
     });
 }
 
+
+// =====================
+// FILTROS
+// =====================
 document.querySelectorAll(".filter").forEach(btn => {
   btn.addEventListener("click", () => {
     document.querySelectorAll(".filter").forEach(b => b.classList.remove("active"));
@@ -42,6 +81,10 @@ document.querySelectorAll(".filter").forEach(btn => {
   });
 });
 
+
+// =====================
+// CARRINHO
+// =====================
 function addToCart(pizza) {
   cart.push(pizza);
   updateCart();
@@ -60,19 +103,17 @@ function updateCart() {
   cart.forEach((item, index) => {
     total += item.price;
 
-    // Montar texto dos detalhes caso existam
     let detalhesTxt = "";
     if (item.detalhes) {
       detalhesTxt = `
         <br>
         <small>
-        ${item.detalhes.tamanho ? "Tamanho: " + item.detalhes.tamanho : ""}
-        ${item.detalhes.massa ? " | Massa: " + item.detalhes.massa : ""}
-        ${item.detalhes.borda ? " | Borda: " + item.detalhes.borda : ""}
-        ${item.detalhes.recheio ? " | Recheio: " + item.detalhes.recheio : ""}
-        ${item.detalhes.ingredientes?.length ? " | Ing: " + item.detalhes.ingredientes.join(", ") : ""}
-        </small>
-      `;
+          ${item.detalhes.tamanho ? "Tamanho: " + item.detalhes.tamanho : ""}
+          ${item.detalhes.massa ? " | Massa: " + item.detalhes.massa : ""}
+          ${item.detalhes.borda ? " | Borda: " + item.detalhes.borda : ""}
+          ${item.detalhes.recheio ? " | Recheio: " + item.detalhes.recheio : ""}
+          ${item.detalhes.ingredientes?.length ? " | Ing: " + item.detalhes.ingredientes.join(", ") : ""}
+        </small>`;
     }
 
     const li = document.createElement("li");
@@ -87,11 +128,14 @@ function updateCart() {
   cartTotal.textContent = `Total: R$ ${total.toFixed(2)}`;
 }
 
-
 function toggleCart() {
   document.getElementById("cart").classList.toggle("hidden");
 }
 
+
+// =====================
+// ENVIAR PEDIDO
+// =====================
 function enviarPedido() {
   const nome = document.getElementById("nome").value.trim();
   const endereco = document.getElementById("endereco").value.trim();
@@ -112,7 +156,6 @@ function enviarPedido() {
   cart.forEach((item) => {
     mensagem += `🍕 ${item.name} - R$ ${item.price.toFixed(2)}`;
 
-    // se tiver detalhes, enviar também
     if (item.detalhes) {
       mensagem += `%0A  • ${item.detalhes.tamanho}`;
       mensagem += ` | ${item.detalhes.massa}`;
@@ -128,13 +171,15 @@ function enviarPedido() {
   const total = cart.reduce((sum, item) => sum + item.price, 0);
   mensagem += `Total: R$ ${total.toFixed(2)}`;
 
-  const numero = "558339"; 
+  const numero = "558339";
   const link = `https://wa.me/${numero}?text=${mensagem}`;
-
   window.open(link, "_blank");
 }
 
-// Função para mostrar a notificação (toast)
+
+// =====================
+// TOAST
+// =====================
 function showToast(message = "Pizza adicionada ao carrinho!") {
   const toast = document.getElementById("toast");
   toast.textContent = message;
@@ -147,101 +192,100 @@ function showToast(message = "Pizza adicionada ao carrinho!") {
   }, 2000);
 }
 
-renderPizzas();
+loadPizzas();
 
-// FECHAR JANELA
+
+// =====================
+// JANELA PERSONALIZAÇÃO
+// =====================
 function cancelar() {
-    document.getElementById("janelaPizza").style.display = "none";
+  document.getElementById("janelaPizza").style.display = "none";
 }
 
-// MOSTRAR RECHEIO DA BORDA
 function mostrarRecheio() {
-    const borda = document.getElementById("borda").value;
-    const div = document.getElementById("recheioDiv");
+  const borda = document.getElementById("borda").value;
+  const div = document.getElementById("recheioDiv");
 
-    if (borda === "recheada") {
-        div.style.display = "block";
-    } else {
-        div.style.display = "none";
-    }
-
-    atualizarPreco();
+  div.style.display = (borda === "recheada") ? "block" : "none";
+  atualizarPreco();
 }
 
-// LIMITAR INGREDIENTES (3)
-document.querySelectorAll('input[name="ing"]').forEach(chk => {
-    chk.addEventListener("change", () => {
-        let marcados = document.querySelectorAll('input[name="ing"]:checked');
 
-        if (marcados.length > 3) {
-            chk.checked = false;
-            alert("Máximo de 3 ingredientes.");
-        }
-    });
+// =====================
+// INGREDIENTES (LIMITAR 3)
+// =====================
+document.querySelectorAll('input[name="ing"]').forEach(chk => {
+  chk.addEventListener("change", () => {
+    let marcados = document.querySelectorAll('input[name="ing"]:checked');
+    if (marcados.length > 3) {
+      chk.checked = false;
+      alert("Máximo de 3 ingredientes.");
+    }
+  });
 });
 
-// CALCULAR PREÇO FINAL
+
+// =====================
+// CALCULAR PREÇO
+// =====================
 function atualizarPreco() {
-    let tamanho = Number(document.getElementById("tamanho").value);
-    let massa = Number(document.getElementById("massa").value);
-    let borda = document.getElementById("borda").value;
-    let recheioBorda = Number(document.getElementById("recheio_borda").value);
+  let tamanho = Number(document.getElementById("tamanho").value);
+  let massa = Number(document.getElementById("massa").value);
+  let borda = document.getElementById("borda").value;
+  let recheioBorda = Number(document.getElementById("recheio_borda").value);
 
-    let total = 0;
+  let total = 0;
 
-    // SOMAR TAMANHO
-    total += tamanho;
+  total += tamanho;
+  total += massa;
 
-    // SOMAR MASSA
-    total += massa;
+  if (borda !== "recheada") {
+    total += Number(borda);
+  } else {
+    total += recheioBorda;
+  }
 
-    // SOMAR BORDA
-    if (borda !== "recheada") {
-        total += Number(borda); // 0 ou 1
-    } else {
-        // SOMAR RECHEIO DA BORDA
-        total += recheioBorda;
-    }
-
-    // ATUALIZAR TELA
-    document.getElementById("preco_final").innerText = total.toFixed(2);
+  document.getElementById("preco_final").innerText = total.toFixed(2);
 }
 
+
+// =====================
+// ENVIAR PIZZA PERSONALIZADA
+// =====================
 function enviarPizzaMontadaParaCarrinho() {
+  const tamanhoSelect = document.getElementById("tamanho");
+  const massaSelect = document.getElementById("massa");
+  const bordaSelect = document.getElementById("borda");
+  const recheioSelect = document.getElementById("recheio_borda");
 
-    const tamanhoSelect = document.getElementById("tamanho");
-    const massaSelect = document.getElementById("massa");
-    const bordaSelect = document.getElementById("borda");
-    const recheioSelect = document.getElementById("recheio_borda");
+  const tamanhoTxt = tamanhoSelect.options[tamanhoSelect.selectedIndex].text;
+  const massaTxt = massaSelect.options[massaSelect.selectedIndex].text;
+  const bordaTxt = bordaSelect.options[bordaSelect.selectedIndex].text;
 
-    const tamanhoTxt = tamanhoSelect.options[tamanhoSelect.selectedIndex].text;
-    const massaTxt = massaSelect.options[massaSelect.selectedIndex].text;
-    const bordaTxt = bordaSelect.options[bordaSelect.selectedIndex].text;
+  const preco = Number(document.getElementById("preco_final").innerText);
 
-    const preco = Number(document.getElementById("preco_final").innerText);
+  const ingredientes = Array.from(document.querySelectorAll('input[name="ing"]:checked'))
+    .map(i => i.value);
 
-    const ingredientes = Array.from(document.querySelectorAll('input[name="ing"]:checked'))
-        .map(i => i.value);
+  let recheioTxt = "";
+  if (bordaSelect.value === "recheada") {
+    recheioTxt = recheioSelect.options[recheioSelect.selectedIndex].text;
+  }
 
-    let recheioTxt = "";
-    if (bordaSelect.value === "recheada") {
-        recheioTxt = recheioSelect.options[recheioSelect.selectedIndex].text;
+  const pizzaMontada = {
+    name: `Pizza Personalizada (${tamanhoTxt})`,
+    price: preco,
+    img: "https://cdn-icons-png.flaticon.com/512/3595/3595455.png",
+    category: "custom",
+    detalhes: {
+      tamanho: tamanhoTxt,
+      massa: massaTxt,
+      borda: bordaTxt,
+      recheio: recheioTxt,
+      ingredientes: ingredientes
     }
+  };
 
-    const pizzaMontada = {
-        name: `Pizza Personalizada (${tamanhoTxt})`,
-        price: preco,
-        img: "https://cdn-icons-png.flaticon.com/512/3595/3595455.png",
-        category: "custom",
-        detalhes: {
-            tamanho: tamanhoTxt,
-            massa: massaTxt,
-            borda: bordaTxt,
-            recheio: recheioTxt,
-            ingredientes: ingredientes
-        }
-    };
-
-    addToCart(pizzaMontada);
-    cancelar();
+  addToCart(pizzaMontada);
+  cancelar();
 }

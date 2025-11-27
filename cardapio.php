@@ -5,7 +5,7 @@
             <button class="filter active" data-category="all">Todas</button>
             <button class="filter" data-category="tradicional">Tradicional</button>
             <button class="filter" data-category="especial">Especial</button>
-            <button class="filter" data-category="vegana">Vegana</button> 
+            <button class="filter" data-category="vegana">Vegana</button>
         </div>
         <button onclick="document.getElementById('janelaPizza').style.display='flex'" class="facavocemesmo">Faça você mesmo</button>
     </div>
