@@ -2,12 +2,12 @@
 // MENU MOBILE
 // =====================
 document.addEventListener("DOMContentLoaded", () => {
-  const menuToggle = document.getElementById('menu-toggle');
-  const nav = document.getElementById('nav');
+  const menuToggle = document.getElementById("menu-toggle");
+  const nav = document.getElementById("nav");
 
   if (menuToggle && nav) {
-    menuToggle.addEventListener('click', () => {
-      nav.style.display = nav.style.display === 'block' ? 'none' : 'block';
+    menuToggle.addEventListener("click", () => {
+      nav.style.display = nav.style.display === "block" ? "none" : "block";
     });
   }
 });
@@ -16,55 +16,63 @@ document.addEventListener("DOMContentLoaded", () => {
 // =====================
 // LISTA DE PIZZAS
 // =====================
-let pizzas = [];
-
-async function loadPizzas() {
-  const r = await fetch("get_pizzas.php");
-  const data = await r.json();
-
-  pizzas = data.map(p => ({
-    id: p.id,
-    name: p.nome,
-    price: Number(p.preco),
-    category: p.categoria.toLowerCase(),
-    img:
-  p.nome === "Margherita" ? "img/pizzas/margherita.jpg" :
-  p.nome === "Calabresa" ? "img/pizzas/calabresa.jpg" :
-  p.nome === "Frango com Catupiry" ? "img/pizzas/frango.jpg" :
-  p.nome === "Quatro Queijos" ? "img/pizzas/quatroqueijos.jpg" :
-  p.nome === "Portuguesa" ? "img/pizzas/portuguesa.jpg" :
-  p.nome === "Vegana" ? "img/pizzas/vegana.jpg" :
-  "img/pizzas/default.jpg"
-
-
-  }));
-
-  renderPizzas("all");
-}
+const pizzas = [
+  {
+    name: "Margherita",
+    category: "tradicional",
+    price: 32,
+    img: "https://instadelivery-public.nyc3.cdn.digitaloceanspaces.com/groups/1715602418664203f28e75f.jpeg"
+  },
+  {
+    name: "Pepperoni",
+    category: "tradicional",
+    price: 36,
+    img: "https://blog.duogourmet.com.br/wp-content/uploads/2019/07/41-Duo-Gourmet-pizza.jpg"
+  },
+  {
+    name: "Vegana Supreme",
+    category: "vegana",
+    price: 39,
+    img: "https://blog.novasafra.com.br/wp-content/uploads/2019/09/receitas-de-pizza-vegana-3-1280x720.jpg"
+  },
+  {
+    name: "Calabresa Especial",
+    category: "especial",
+    price: 42,
+    img: "https://blog.duogourmet.com.br/wp-content/uploads/2019/07/41-Duo-Gourmet-pizza.jpg"
+  }
+];
 
 
 // =====================
 // RENDERIZAR LISTA
 // =====================
-const list = document.getElementById('pizza-list');
+const list = document.getElementById("pizza-list");
 const cart = [];
-const cartItems = document.getElementById('cart-items');
-const cartTotal = document.getElementById('cart-total');
+const cartItems = document.getElementById("cart-items");
+const cartTotal = document.getElementById("cart-total");
 
-function renderPizzas(category = 'all') {
+function renderPizzas(category = "all") {
   list.innerHTML = "";
+
   pizzas
-    .filter(p => category === 'all' || p.category === category)
+    .filter(p => category === "all" || p.category === category)
     .forEach(pizza => {
       const card = document.createElement("div");
       card.className = "pizza-card";
+
       card.innerHTML = `
-        <img src="${pizza.img}" alt="${pizza.name}">
-        <div class="details">
-          <h4>${pizza.name}</h4>
-          <p>R$ ${pizza.price.toFixed(2)}</p>
-          <button onclick='addToCart(${JSON.stringify(pizza)})'>Adicionar</button>
-        </div>`;
+        <img src="${pizza.img}" alt="${pizza.name}" class="pizza-img">
+
+        <h3>${pizza.name}</h3>
+
+        <p class="price">R$ ${pizza.price.toFixed(2)}</p>
+
+        <button class="add-btn" onclick='addToCart(${JSON.stringify(pizza)})'>
+          Adicionar 🍕
+        </button>
+      `;
+
       list.appendChild(card);
     });
 }
@@ -153,7 +161,7 @@ function enviarPedido() {
   let mensagem = `Olá! Gostaria de fazer um pedido:%0A`;
   mensagem += `👤 Nome: ${nome}%0A📍 Endereço: ${endereco}%0A%0A`;
 
-  cart.forEach((item) => {
+  cart.forEach(item => {
     mensagem += `🍕 ${item.name} - R$ ${item.price.toFixed(2)}`;
 
     if (item.detalhes) {
@@ -192,8 +200,6 @@ function showToast(message = "Pizza adicionada ao carrinho!") {
   }, 2000);
 }
 
-loadPizzas();
-
 
 // =====================
 // JANELA PERSONALIZAÇÃO
@@ -206,7 +212,7 @@ function mostrarRecheio() {
   const borda = document.getElementById("borda").value;
   const div = document.getElementById("recheioDiv");
 
-  div.style.display = (borda === "recheada") ? "block" : "none";
+  div.style.display = borda === "recheada" ? "block" : "none";
   atualizarPreco();
 }
 
@@ -234,10 +240,7 @@ function atualizarPreco() {
   let borda = document.getElementById("borda").value;
   let recheioBorda = Number(document.getElementById("recheio_borda").value);
 
-  let total = 0;
-
-  total += tamanho;
-  total += massa;
+  let total = tamanho + massa;
 
   if (borda !== "recheada") {
     total += Number(borda);
@@ -264,8 +267,9 @@ function enviarPizzaMontadaParaCarrinho() {
 
   const preco = Number(document.getElementById("preco_final").innerText);
 
-  const ingredientes = Array.from(document.querySelectorAll('input[name="ing"]:checked'))
-    .map(i => i.value);
+  const ingredientes = Array.from(
+    document.querySelectorAll('input[name="ing"]:checked')
+  ).map(i => i.value);
 
   let recheioTxt = "";
   if (bordaSelect.value === "recheada") {
@@ -289,3 +293,9 @@ function enviarPizzaMontadaParaCarrinho() {
   addToCart(pizzaMontada);
   cancelar();
 }
+
+
+// =====================
+// INICIAR RENDERIZAÇÃO
+// =====================
+renderPizzas();
