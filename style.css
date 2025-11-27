@@ -1,19 +1,32 @@
+/* =====================================================
+   GLOBAL / RESET
+===================================================== */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+
 body {
   margin: 0;
-  font-family: sans-serif;
-  background: #f9fafb;
+  font-family: 'Poppins', sans-serif;
+  background: #fafafa;
+  color: #111;
 }
 
+/* Limita largura geral */
 .container {
   max-width: 960px;
   margin: auto;
   padding: 0 1rem;
 }
 
+/* =====================================================
+   HEADER
+===================================================== */
+
 .header {
   background: #dc2626;
   color: white;
   padding: 1rem 0;
+  position: relative;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.18);
   position: relative;
 }
 
@@ -28,6 +41,14 @@ body {
   margin-right: 0.5rem;
 }
 
+.menu-toggle {
+  font-size: 1.8rem;
+  background: none;
+  border: none;
+  color: white;
+  cursor: pointer;
+}
+
 .nav {
   display: none;
 }
@@ -38,36 +59,33 @@ body {
   margin: 1rem 0 0;
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
+  gap: 0.7rem;
 }
 
 .nav a {
   color: white;
   text-decoration: none;
+  font-weight: 500;
+  transition: 0.25s;
 }
 
-.menu-toggle {
-  font-size: 1.5rem;
-  background: none;
-  border: none;
-  color: white;
-  display: block;
+.nav a:hover {
+  opacity: 0.8;
 }
 
+/* Barra de informações */
 .info-bar {
   background: #b91c1c;
   color: white;
-  padding: 0.5rem;
+  padding: 0.6rem;
   display: flex;
   justify-content: center;
   gap: 2rem;
+  font-size: 0.95rem;
+  box-shadow: inset 0 -2px 6px rgba(0,0,0,0.25);
 }
 
 @media (min-width: 768px) {
-  .brand {
-    justify-content: space-between;
-  }
-
   .nav {
     display: block !important;
     position: static;
@@ -81,12 +99,20 @@ body {
   .menu-toggle {
     display: none;
   }
+
+  .brand {
+    justify-content: space-between;
+  }
 }
+
+/* =====================================================
+   FILTROS
+===================================================== */
 
 .barra {
   display: flex;
-  flex-direction: row;
   justify-content: space-between;
+  margin-top: 1.5rem;
 }
 
 .filters {
@@ -96,14 +122,16 @@ body {
   flex-wrap: wrap;
 }
 
-.filter {
-  padding: 0.5rem 1rem;
-  border: 1px solid #dc2626;
+.filter,
+.facavocemesmo {
+  padding: 0.55rem 1.2rem;
+  border: 1.5px solid #dc2626;
   background: white;
   color: #dc2626;
-  border-radius: 20px;
+  font-weight: 500;
+  border-radius: 999px;
   cursor: pointer;
-  transition: 0.3s;
+  transition: 0.25s ease-in-out;
 }
 
 .filter:hover,
@@ -114,36 +142,30 @@ body {
   color: white;
 }
 
-.facavocemesmo {
-  margin: 1em 1em;
-  padding: 0.5rem 1rem;
-  font-size: large;
-  border: 1px solid #dc2626;
-  background: white;
-  color: #dc2626;
-  border-radius: 20px;
-  cursor: pointer;
-  transition: 0.3s;
-}
+/* =====================================================
+   LISTA DE PIZZAS / CARDS
+===================================================== */
 
-.pizza-list {
+#pizza-list {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-  gap: 1.5rem;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 1.8rem;
+  padding-bottom: 40px;
 }
 
 .pizza-card {
   background: white;
-  border-radius: 1rem;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  border-radius: 18px;
   overflow: hidden;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.08);
   display: flex;
   flex-direction: column;
-  transition: transform 0.3s ease;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
 }
 
 .pizza-card:hover {
-  transform: translateY(-5px);
+  transform: translateY(-6px);
+  box-shadow: 0 8px 22px rgba(0, 0, 0, 0.14);
 }
 
 .pizza-card img {
@@ -159,33 +181,41 @@ body {
 
 .pizza-card h4 {
   margin: 0 0 0.5rem;
+  font-size: 1.1rem;
 }
 
 .pizza-card button {
-  margin-top: 0.5rem;
-  padding: 0.5rem 1rem;
+  margin-top: 0.7rem;
+  padding: 0.6rem 1.2rem;
   background: #dc2626;
   color: white;
   border: none;
-  border-radius: 0.5rem;
+  border-radius: 12px;
+  font-weight: 600;
   cursor: pointer;
-  transition: 0.3s;
+  letter-spacing: 0.3px;
+  transition: 0.25s ease;
 }
 
 .pizza-card button:hover {
   background: #b91c1c;
+  transform: scale(1.05);
 }
+
+/* =====================================================
+   CARRINHO LATERAL
+===================================================== */
 
 .cart {
   position: fixed;
   top: 0;
   right: 0;
-  width: 300px;
+  width: 320px;
   background: white;
   height: 100%;
   padding: 1rem;
-  box-shadow: -4px 0 8px rgba(0, 0, 0, 0.1);
-  z-index: 10;
+  box-shadow: -4px 0 12px rgba(0,0,0,0.15);
+  z-index: 20;
   transition: transform 0.3s ease;
   overflow-y: auto;
 }
@@ -198,23 +228,9 @@ body {
   background: #dc2626;
   color: white;
   border: none;
-  padding: 0.5rem 1rem;
+  padding: 0.6rem 1rem;
   margin-top: 1rem;
-  border-radius: 5px;
-  cursor: pointer;
-}
-
-.floating-cart {
-  position: fixed;
-  bottom: 1.5rem;
-  right: 1.5rem;
-  background: #dc2626;
-  color: white;
-  border: none;
-  padding: 1rem;
-  border-radius: 50%;
-  font-size: 1.2rem;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  border-radius: 8px;
   cursor: pointer;
 }
 
@@ -224,58 +240,94 @@ body {
   color: #dc2626;
   font-weight: bold;
   cursor: pointer;
-  margin-left: 10px;
 }
+
+/* Botão flutuante do carrinho */
+.floating-cart {
+  position: fixed;
+  bottom: 1.3rem;
+  right: 1.3rem;
+  background: #dc2626;
+  color: white;
+  padding: 1rem;
+  border-radius: 50%;
+  font-size: 1.35rem;
+  border: none;
+  cursor: pointer;
+  box-shadow: 0 6px 18px rgba(0,0,0,0.28);
+  transition: 0.25s ease;
+  z-index: 30;
+}
+
+.floating-cart:hover {
+  transform: scale(1.15);
+  background: #b91c1c;
+}
+
+/* =====================================================
+   WHATSAPP
+===================================================== */
 
 .whatsapp-order {
   background: #25d366;
   color: white;
   border: none;
-  padding: 0.7rem;
-  border-radius: 5px;
+  padding: 0.75rem;
+  border-radius: 8px;
   width: 100%;
   margin-top: 1rem;
   font-size: 1rem;
   cursor: pointer;
-  transition: background 0.3s;
+  transition: 0.25s;
 }
 
 .whatsapp-order:hover {
   background: #1ebe5d;
 }
 
+/* =====================================================
+   FORMULÁRIO
+===================================================== */
+
 .form input {
   width: 100%;
   margin: 0.5rem 0;
-  padding: 0.6rem;
+  padding: 0.65rem;
   border: 1px solid #ccc;
-  border-radius: 5px;
+  border-radius: 6px;
 }
 
-/* Toast/Notificação (mensagem de pizza adicionada ao carrinho) */
+/* =====================================================
+   TOAST (Notificação)
+===================================================== */
+
 .toast {
   position: fixed;
   bottom: 80px;
   right: 20px;
   background-color: #4BB543;
   color: white;
-  padding: 1rem 1.5rem;
-  border-radius: 5px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  padding: 1.2rem 1.6rem;
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.25);
   opacity: 0;
   transform: translateY(20px);
-  transition: opacity 0.3s ease, transform 0.3s ease;
+  transition: 0.3s ease;
   z-index: 1000;
 }
 
 .toast.show {
   opacity: 1;
-  transform: translateY(0);
+  transform: translateY(-10px);
 }
 
 .toast.hidden {
   display: none;
 }
+
+/* =====================================================
+   MODAL / OVERLAY
+===================================================== */
 
 .overlay {
   position: fixed;
@@ -284,10 +336,10 @@ body {
   width: 100%;
   height: 100%;
   background: rgba(0,0,0,0.55);
-  display: flex;
+  display: none;
   justify-content: center;
   align-items: center;
-  display: none; /* começa escondido */
+  z-index: 90;
 }
 
 .janela {
@@ -297,7 +349,7 @@ body {
   border-radius: 12px;
   padding: 25px;
   overflow-y: auto;
-  box-shadow: 0 0 15px rgba(0,0,0,0.4);
+  box-shadow: 0 0 20px rgba(0,0,0,0.4);
   animation: pop .25s ease;
 }
 
@@ -314,11 +366,244 @@ body {
 }
 
 button.fechar {
-  background: red;
+  background: #dc2626;
   color: white;
   border: none;
-  padding: 5px 10px;
+  padding: 6px 12px;
   border-radius: 6px;
   cursor: pointer;
   font-weight: bold;
+}
+
+/* =====================================================
+   IMAGEM DO PIZZAIOLO
+===================================================== */
+
+.pizzaiolo-container {
+  position: absolute;
+  top: 12px;
+  right: 18px;
+  z-index: 20;
+  pointer-events: none;
+}
+
+.pizzaiolo-image {
+  height: 120px;
+  object-fit: contain;
+  opacity: 0.9;
+}
+
+@media (max-width: 768px) {
+  .pizzaiolo-image {
+    height: 85px;
+    opacity: 0.7;
+  }
+}
+
+.facavocemesmo {
+    background-color: #ff4d4d;
+    color: white;
+    padding: 10px 18px;          /* Deixa o botão menor e proporcional */
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.3s;
+    white-space: nowrap;         /* Impede o texto de quebrar */
+}
+
+.facavocemesmo:hover {
+    background-color: #e04444;
+    transform: scale(1.05);
+}
+
+.barra {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.pizzaiolo-icon {
+    position: absolute;
+    top: 15px;
+    right: 20px;
+    width: 70px;          
+    height: auto;
+    border-radius: 50%;    
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    border: 3px solid white;
+    background: white;
+    object-fit: cover;
+}
+
+/* =====================================================
+   HEADER MODERNO (SUBSTITUI SEU HEADER ANTIGO)
+===================================================== */
+
+/* Container principal do header */
+.header-content,
+.header-modern {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 18px 40px;
+    max-width: 1200px;
+    margin: auto;
+}
+
+/* Área da logo + nome */
+.logo-area {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.logo-img {
+    width: 55px;
+    height: 55px;
+    border-radius: 12px;
+    object-fit: cover;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.25);
+    background: white;
+}
+
+/* Nome da pizzaria */
+.logo-text {
+    font-size: 22px;
+    font-weight: 700;
+    color: white;
+    letter-spacing: 0.5px;
+}
+
+/* Menu à direita */
+.nav-menu {
+    display: flex;
+    align-items: center;
+    gap: 22px;
+}
+
+.nav-menu a,
+.nav-menu span {
+    color: white !important;
+    font-size: 17px;
+    font-weight: 500;
+    text-decoration: none;
+}
+
+.nav-menu a:hover {
+    opacity: 0.8;
+}
+
+/* Telefone */
+.phone i {
+    margin-right: 4px;
+    font-style: normal;
+}
+
+/* Remove conflitos com seu menu antigo */
+.header .container.header-content {
+    display: none !important;
+}
+
+/* Mantém o fundo */
+.header {
+    background: #dc2626;
+    padding-top: 25px;
+    padding-bottom: 25px;
+}
+
+/* MOBILE */
+@media (max-width: 768px) {
+    .header-modern {
+        padding: 15px;
+        flex-direction: column;
+        gap: 12px;
+    }
+
+    .nav-menu {
+        gap: 12px;
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+
+    .logo-text {
+        font-size: 20px;
+    }
+}
+
+/* ...restante do seu CSS aqui... */
+
+/* ============================
+   HEADER OFICIAL  
+============================ */
+
+.header {
+    position: relative;
+    width: 100%;
+    background: #d32f2f;
+    padding: 18px 30px;
+    box-shadow: 0 3px 12px rgba(0,0,0,0.25);
+    z-index: 10;
+}
+
+.header-modern {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.logo-area {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.logo-img {
+    width: 55px;
+    height: 55px;
+    border-radius: 12px;
+    object-fit: cover;
+}
+
+.logo-text {
+    font-size: 22px;
+    font-weight: 700;
+    color: white;
+}
+
+.nav-menu {
+    display: flex;
+    align-items: center;
+    gap: 22px;
+}
+
+.nav-menu a,
+.nav-menu span {
+    color: white;
+    font-size: 16px;
+    font-weight: 600;
+    text-decoration: none;
+}
+
+/* Foto do pizzaiolo */
+.pizzaiolo-image-container {
+    position: absolute;
+    top: 10px;
+    right: 20px;
+}
+
+.pizzaiolo-icon {
+    width: 120px;
+    height: auto;
+    border-radius: 50%;
+    border: 3px solid white;
+    box-shadow: 0 4px 14px rgba(0,0,0,0.2);
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
 }
