@@ -3,6 +3,7 @@ require "../config.php";
 
 $id = $_GET["id"];
 
+// Buscar pizza
 $stmt = mysqli_prepare($conn, "SELECT * FROM pizzas WHERE id = ?");
 mysqli_stmt_bind_param($stmt, "i", $id);
 mysqli_stmt_execute($stmt);
@@ -14,14 +15,33 @@ if (!$pizza) {
     die("Pizza não encontrada.");
 }
 
+$diretorio = "../img/pizzas/";
+
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
+
     $nome = $_POST["nome"];
     $descricao = $_POST["descricao"];
     $preco = $_POST["preco"];
     $categoria = $_POST["categoria"];
+    $imagem = $pizza["imagem"]; // mantém a atual
 
-    $stmt = mysqli_prepare($conn, "UPDATE pizzas SET nome=?, descricao=?, preco=?, categoria=? WHERE id=?");
-    mysqli_stmt_bind_param($stmt, "ssdsi", $nome, $descricao, $preco, $categoria, $id);
+    // Se enviou nova imagem
+    if (isset($_FILES["nova_imagem"]) && $_FILES["nova_imagem"]["error"] === 0) {
+
+        $nome_original = pathinfo($_FILES["nova_imagem"]["name"], PATHINFO_FILENAME);
+        $nome_original = preg_replace('/[^a-zA-Z0-9_-]/', '_', $nome_original);
+        $ext = strtolower(pathinfo($_FILES["nova_imagem"]["name"], PATHINFO_EXTENSION));
+        $novo_nome = $nome_original . "_" . time() . "." . $ext;
+
+        move_uploaded_file($_FILES["nova_imagem"]["tmp_name"], $diretorio . $novo_nome);
+        $imagem = $novo_nome;
+    }
+
+    // Atualizar no banco
+    $stmt = mysqli_prepare($conn,
+        "UPDATE pizzas SET nome=?, descricao=?, preco=?, categoria=?, imagem=? WHERE id=?"
+    );
+    mysqli_stmt_bind_param($stmt, "ssdssi", $nome, $descricao, $preco, $categoria, $imagem, $id);
     mysqli_stmt_execute($stmt);
     mysqli_stmt_close($stmt);
 
@@ -29,33 +49,38 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     exit;
 }
 ?>
+
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-    <meta charset="UTF-8">
-    <title>Editar Pizza</title>
+<meta charset="UTF-8">
+<title>Editar Pizza</title>
 </head>
 <body>
-    <h1>Editar Pizza</h1>
 
-    <form method="POST">
-        Nome:<br>
-        <input type="text" name="nome" value="<?= $pizza['nome'] ?>" required><br><br>
+<h1>Editar Pizza</h1>
 
-        Descrição:<br>
-        <textarea name="descricao" required><?= $pizza['descricao'] ?></textarea><br><br>
+<form method="POST" enctype="multipart/form-data">
+    Nome:<br>
+    <input type="text" name="nome" value="<?= $pizza['nome'] ?>"><br><br>
 
-        Preço:<br>
-        <input type="number" step="0.01" name="preco" value="<?= $pizza['preco'] ?>" required><br><br>
+    Descrição:<br>
+    <textarea name="descricao"><?= $pizza['descricao'] ?></textarea><br><br>
 
-        Categoria:<br>
-        <select name="categoria">
-            <option value="tradicional" <?= $pizza['categoria']=="tradicional"?"selected":"" ?>>Tradicional</option>
-            <option value="especial" <?= $pizza['categoria']=="especial"?"selected":"" ?>>Especial</option>
-            <option value="vegana" <?= $pizza['categoria']=="vegana"?"selected":"" ?>>Vegana</option>
-        </select><br><br>
+    Preço:<br>
+    <input type="number" step="0.01" name="preco" value="<?= $pizza['preco'] ?>"><br><br>
 
-        <button type="submit">Salvar Alterações</button>
-    </form>
+    Categoria:<br>
+    <input type="text" name="categoria" value="<?= $pizza['categoria'] ?>"><br><br>
+
+    Imagem atual:<br>
+    <img src="../img/pizzas/<?= $pizza['imagem'] ?>" width="120"><br><br>
+
+    Nova imagem (opcional):<br>
+    <input type="file" name="nova_imagem"><br><br>
+
+    <button type="submit">Salvar Alterações</button>
+</form>
+
 </body>
 </html>

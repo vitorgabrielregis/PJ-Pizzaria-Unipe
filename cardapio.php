@@ -1,3 +1,32 @@
+<?php
+require "config.php"; // conexão com o banco
+
+// Busca todas as pizzas
+$result = mysqli_query($conn, "SELECT * FROM pizzas ORDER BY id DESC");
+$pizzas = [];
+while ($row = mysqli_fetch_assoc($result)) {
+    $pizzas[] = $row;
+}
+?>
+
+
+<!-- SE NÃO estiver logado → mostra botão LOGIN -->
+<?php if (!isset($_SESSION["admin"])): ?>
+    <div style="background:#111; padding:10px; text-align:right;">
+        <a href="admin/login.php" style="color:#0f0; font-size:16px; margin-right:20px;">🔐 Login</a>
+    </div>
+<?php endif; ?>
+
+<!-- SE estiver logado → mostra botões de ADMIN -->
+<?php if (isset($_SESSION["admin"])): ?>
+    <div style="background:#222; padding:10px; text-align:center;">
+        <a href="admin/pizzas_adicionar.php" style="color:#0f0; margin-right:15px;">➕ Adicionar Pizza</a>
+        <a href="admin/pizzas_listar.php" style="color:#0f0; margin-right:15px;">📋 Gerenciar Pizzas</a>
+        <a href="admin/logout.php" style="color:#f66;">🚪 Sair</a>
+    </div>
+<?php endif; ?>
+
+
 <main class="container">
     <!-- Filtros-->
     <div class="barra">
@@ -19,7 +48,6 @@
             </div>
 
             <form>
-
                 <!-- TAMANHO -->
                 <label>Tamanho:</label><br>
                 <select id="tamanho" onchange="atualizarPreco()">
@@ -79,11 +107,20 @@
 
             </form>
         </div>
-    </div>
-
+</div>
 
     <!-- Lista das Pizzas-->
-    <div id="pizza-list" class="pizza-list"></div>
+    <div id="pizza-list" class="pizza-list">
+    <?php foreach($pizzas as $p): ?>
+        <div class="pizza-card" data-category="<?= $p['categoria'] ?>">
+            <img src="img/pizzas/<?= $pizza['imagem'] ?>">
+         alt="<?= htmlspecialchars($p['nome']) ?>" width="150">
+            <h3><?= htmlspecialchars($p['nome']) ?></h3>
+            <p><?= htmlspecialchars($p['descricao']) ?></p>
+            <p>R$ <?= number_format($p['preco'], 2, ',', '.') ?></p>
+        </div>
+    <?php endforeach; ?>
+</div>
 
     <!-- Carrinho -->
     <div id="cart" class="cart hidden">
@@ -103,6 +140,7 @@
     <!-- Botão flutuante do carrinho-->
     <button class="floating-cart" onclick="toggleCart()">🛒</button>
 </main>
+
 <!-- Notificação-->
 <div id="toast" class="toast hidden">Pizza adicionada ao carrinho! 🍕</div>
 

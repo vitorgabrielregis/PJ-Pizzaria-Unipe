@@ -27,14 +27,8 @@ async function loadPizzas() {
     name: p.nome,
     price: Number(p.preco),
     category: p.categoria.toLowerCase(),
-    img:
-  p.nome === "Margherita" ? "img/pizzas/margherita.jpg" :
-  p.nome === "Calabresa" ? "img/pizzas/calabresa.jpg" :
-  p.nome === "Frango com Catupiry" ? "img/pizzas/frango.jpg" :
-  p.nome === "Quatro Queijos" ? "img/pizzas/quatroqueijos.jpg" :
-  p.nome === "Portuguesa" ? "img/pizzas/portuguesa.jpg" :
-  p.nome === "Vegana" ? "img/pizzas/vegana.jpg" :
-  "img/pizzas/default.jpg"
+    img: "img/pizzas/" + p.imagem
+
 
 
   }));

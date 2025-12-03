@@ -24,12 +24,28 @@
 
       <!-- MENU -->
       <nav class="nav-menu">
-          <a href="#menu">Menu</a>
-          <a href="#contact">Contato</a>
-          <span class="phone">📞 (83) 99958-6639</span>
-      </nav>
+    <a href="#menu">Menu</a>
+    <a href="#contact">Contato</a>
+    <span class="phone">📞 (83) 99958-6639</span>
 
-  </div> <!-- fecha header-modern -->
+    <?php
+    session_start();
+    if (!isset($_SESSION["usuario"])) {
+        // Usuário não logado
+        echo '<a href="login.php" class="botao">Entrar</a>';
+        echo '<a href="cadastrar.php" class="botao">Criar Conta</a>';
+    } elseif (isset($_SESSION["admin"]) && $_SESSION["admin"] === true) {
+        // Admin logado
+        echo '<a href="index.php" class="botao">Painel Admin</a>';
+        echo '<a href="logout.php" class="botao">Sair</a>';
+    } else {
+        // Usuário normal logado
+        echo '<a href="logout.php" class="botao">Sair</a>';
+    }
+    ?>
+</nav>
+
+  </div> 
 
   <!-- FOTO DO PIZZAIOLO -->
   <div class="pizzaiolo-image-container">

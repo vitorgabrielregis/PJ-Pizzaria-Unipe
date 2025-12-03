@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Tempo de geração: 20/11/2025 às 14:01
+-- Tempo de geração: 03/12/2025 às 16:54
 -- Versão do servidor: 10.4.32-MariaDB
 -- Versão do PHP: 8.2.12
 
@@ -60,8 +60,46 @@ CREATE TABLE `pizzas` (
   `nome` varchar(100) NOT NULL,
   `descricao` text DEFAULT NULL,
   `preco` decimal(10,2) NOT NULL,
-  `categoria` varchar(50) NOT NULL
+  `categoria` varchar(50) NOT NULL,
+  `imagem` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Despejando dados para a tabela `pizzas`
+--
+
+INSERT INTO `pizzas` (`id`, `nome`, `descricao`, `preco`, `categoria`, `imagem`) VALUES
+(1, 'Margherita', 'Molho de tomate, mussarela e manjericão fresco', 28.00, 'Tradicional', 'margherita_1764772872.jpg'),
+(2, 'Calabresa', 'Calabresa fatiada com cebola e orégano', 30.00, 'Tradicional', 'calabresa_1764772863.jpg'),
+(3, 'Frango com Catupiry', 'Frango desfiado com catupiry cremoso', 32.00, 'Especial', 'frango_1764772848.jpg'),
+(4, 'Quatro Queijos', 'Mussarela, parmesão, provolone e gorgonzola', 35.00, 'Especial', 'quatroqueijos_1764772836.jpg'),
+(5, 'Portuguesa', 'Presunto, ovo, cebola, pimentão e azeitonas', 33.00, 'Tradicional', 'Portuguesa_1764772822.jpg'),
+(6, 'Vegana', 'Queijo vegano, tomate, manjericão e azeite', 29.00, 'tradicional', 'Vegana_1764772814.jpg'),
+(7, 'Pizza Pudim', 'Pudim', 40.00, 'especial', 'Pizza_pudim_1764772550.jpg'),
+(8, 'Lombo Canadense', 'Lombo defumado e coberto por muçarela ou Catupiry.', 45.00, 'Especial', 'Lombo_canadense_1764774408.jpg');
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura para tabela `usuarios`
+--
+
+CREATE TABLE `usuarios` (
+  `id` int(11) NOT NULL,
+  `usuario` varchar(50) NOT NULL,
+  `senha` varchar(255) NOT NULL,
+  `tipo` enum('cliente','admin') NOT NULL DEFAULT 'cliente'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Despejando dados para a tabela `usuarios`
+--
+
+INSERT INTO `usuarios` (`id`, `usuario`, `senha`, `tipo`) VALUES
+(6, 'Davi', '$2b$12$vlw9sAhXK.in78vJmLvFo.1mreSL1zfpP1tSx8sIAXiTbkgAtn3WK', 'admin'),
+(7, 'Vitor Gabriel', '$2b$12$VnAv6mo9MIYglK9kBEGfo.zS7RSsRytANiH0975SJgZHESt6zxnxm', 'admin'),
+(8, 'Erick Mauricio', '$2b$12$iMyGqb21oHOu/8mYOrQPYe89J0MoIfsvFE34rh21KnaMe3IUzLIZi', 'admin'),
+(9, 'TR014777', '$2b$12$bgpeJtJ3aNbGKjPPX1nDDe1WnHHadDSX.M/AEFJp9nwwL/ipUaWfW', 'admin');
 
 --
 -- Índices para tabelas despejadas
@@ -88,6 +126,13 @@ ALTER TABLE `pizzas`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Índices de tabela `usuarios`
+--
+ALTER TABLE `usuarios`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `usuario` (`usuario`);
+
+--
 -- AUTO_INCREMENT para tabelas despejadas
 --
 
@@ -107,7 +152,13 @@ ALTER TABLE `pedidos`
 -- AUTO_INCREMENT de tabela `pizzas`
 --
 ALTER TABLE `pizzas`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+
+--
+-- AUTO_INCREMENT de tabela `usuarios`
+--
+ALTER TABLE `usuarios`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- Restrições para tabelas despejadas
