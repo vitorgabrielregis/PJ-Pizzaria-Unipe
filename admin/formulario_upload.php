@@ -1,4 +1,7 @@
 <?php
+
+include_once "../topo.php";
+
 session_start();
 if (!isset($_SESSION["admin"]) || $_SESSION["admin"] !== true) {
     exit("Acesso negado!");

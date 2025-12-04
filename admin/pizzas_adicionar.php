@@ -1,6 +1,8 @@
 <?php
 require "../config.php";
 
+include_once "../topo.php";
+
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
     $nome = $_POST["nome"];
@@ -42,17 +44,19 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     <title>Adicionar Pizza</title>
 
     <style>
-        body { font-family: Arial; padding: 20px; }
-        form { width: 350px; padding: 20px; border: 1px solid #ccc; border-radius: 8px; }
-        input, textarea, select {
-            width: 100%; padding: 8px; margin-top: 5px; margin-bottom: 12px;
+        body { font-family: Arial }
+        h2 { margin: 20px }
+        form { width: 45%; margin: 20px; padding: 40px 40px 40px 20px; border: 1px solid #ccc; border-radius: 8px; }
+        select { width: 20%; padding: 10px; }
+        input, textarea {
+            width: 100%; padding: 8px; margin-top: 5px; margin-bottom: 12px; resize: vertical;
         }
         button {
             background: #d32f2f;
             color: white;
             padding: 10px;
             border: none;
-            width: 100%;
+            width: 20%;
             border-radius: 5px;
             cursor: pointer;
         }

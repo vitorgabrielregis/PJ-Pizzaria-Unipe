@@ -9,20 +9,11 @@ while ($row = mysqli_fetch_assoc($result)) {
 }
 ?>
 
-
-<!-- SE NÃO estiver logado → mostra botão LOGIN -->
-<?php if (!isset($_SESSION["admin"])): ?>
-    <div style="background:#111; padding:10px; text-align:right;">
-        <a href="admin/login.php" style="color:#0f0; font-size:16px; margin-right:20px;">🔐 Login</a>
-    </div>
-<?php endif; ?>
-
 <!-- SE estiver logado → mostra botões de ADMIN -->
 <?php if (isset($_SESSION["admin"])): ?>
     <div style="background:#222; padding:10px; text-align:center;">
         <a href="admin/pizzas_adicionar.php" style="color:#0f0; margin-right:15px;">➕ Adicionar Pizza</a>
         <a href="admin/pizzas_listar.php" style="color:#0f0; margin-right:15px;">📋 Gerenciar Pizzas</a>
-        <a href="admin/logout.php" style="color:#f66;">🚪 Sair</a>
     </div>
 <?php endif; ?>
 

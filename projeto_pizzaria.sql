@@ -100,6 +100,7 @@ INSERT INTO `usuarios` (`id`, `usuario`, `senha`, `tipo`) VALUES
 (7, 'Vitor Gabriel', '$2b$12$VnAv6mo9MIYglK9kBEGfo.zS7RSsRytANiH0975SJgZHESt6zxnxm', 'admin'),
 (8, 'Erick Mauricio', '$2b$12$iMyGqb21oHOu/8mYOrQPYe89J0MoIfsvFE34rh21KnaMe3IUzLIZi', 'admin'),
 (9, 'TR014777', '$2b$12$bgpeJtJ3aNbGKjPPX1nDDe1WnHHadDSX.M/AEFJp9nwwL/ipUaWfW', 'admin');
+(10, 'admin', '$2y$10$X6vCa1kMSsB6AUK9WVyAWuLUUNWWTs2rDQk9V7mKSlI1rKLy28EM6', 'admin');
 
 --
 -- Índices para tabelas despejadas

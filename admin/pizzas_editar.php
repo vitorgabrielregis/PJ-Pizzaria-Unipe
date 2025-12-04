@@ -1,6 +1,8 @@
 <?php
 require "../config.php";
 
+include_once "../topo.php";
+
 $id = $_GET["id"];
 
 // Buscar pizza
@@ -55,28 +57,47 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 <head>
 <meta charset="UTF-8">
 <title>Editar Pizza</title>
+<style>
+        body { font-family: Arial }
+        h2 { margin: 20px }
+        form { width: 45%; margin: 20px; padding: 40px 40px 40px 20px; border: 1px solid #ccc; border-radius: 8px; }
+        select { width: 20%; padding: 10px; }
+        input, textarea {
+            width: 100%; padding: 8px; margin-top: 5px; margin-bottom: 12px; resize: vertical;
+        }
+        button {
+            background: #d32f2f;
+            color: white;
+            padding: 10px;
+            border: none;
+            width: 20%;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover { background: #b71c1c; }
+    </style>
 </head>
 <body>
 
-<h1>Editar Pizza</h1>
+<h2>Editar Pizza</h2>
 
 <form method="POST" enctype="multipart/form-data">
-    Nome:<br>
+    <label>Nome:</label>
     <input type="text" name="nome" value="<?= $pizza['nome'] ?>"><br><br>
 
-    Descrição:<br>
+    <label>Descrição:</label>
     <textarea name="descricao"><?= $pizza['descricao'] ?></textarea><br><br>
 
-    Preço:<br>
+    <label>Preço</label>
     <input type="number" step="0.01" name="preco" value="<?= $pizza['preco'] ?>"><br><br>
 
-    Categoria:<br>
+    <label>Categoria:</label>
     <input type="text" name="categoria" value="<?= $pizza['categoria'] ?>"><br><br>
 
     Imagem atual:<br>
     <img src="../img/pizzas/<?= $pizza['imagem'] ?>" width="120"><br><br>
 
-    Nova imagem (opcional):<br>
+    <label>Imagem nova:</label>
     <input type="file" name="nova_imagem"><br><br>
 
     <button type="submit">Salvar Alterações</button>

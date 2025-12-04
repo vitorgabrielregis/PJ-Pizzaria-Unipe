@@ -1,6 +1,8 @@
 <?php
 require "../config.php";
 
+include_once "../topo.php";
+
 $id = $_GET["id"];
 
 $stmt = mysqli_prepare($conn, "DELETE FROM pizzas WHERE id = ?");
